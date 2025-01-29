@@ -40,18 +40,13 @@
 //    }
 //}
 
-
-using BlogApp;
-
 public class Program
 {
     public static void Main(string[] args)
     {
-
         //using (var db = new BlogContext())
         //{
-        //    Console.WriteLine("Connected !");
+        //    db.Database.EnsureCreated();
         //}
-
     }
 }

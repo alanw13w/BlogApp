@@ -16,6 +16,7 @@ namespace BlogService.Models
         public UserModel? UserModel { get; set; }
 
 
+
         public static PostModel fromDomainEntity(Post post)
         {
             return new PostModel
@@ -29,6 +30,11 @@ namespace BlogService.Models
                 BlogModel = null,
                 UserModel = null,
             };
+        }
+
+        public Post toDomainEntity()
+        {
+            return new Post(this.PostModelId, this.Title, this.Content,  this.DateTime);
         }
     }
 }

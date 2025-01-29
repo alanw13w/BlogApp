@@ -9,16 +9,18 @@ namespace BlogService.Models
 
         public List<PostModel> PostModels { get; set; }
 
-
-
         static public BlogModel fromDomainEntity(Blog blog)
         {
             return new BlogModel
             {
                 BlogModelId = blog.BlogId,
                 Name = blog.Name,
-                PostModels = null,
             };
+        }
+
+        public Blog toDomainEntity()
+        {
+            return new Blog(this.BlogModelId,this.Name);
         }
     }
 }

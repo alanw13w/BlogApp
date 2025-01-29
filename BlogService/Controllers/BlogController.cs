@@ -13,6 +13,21 @@ namespace BlogService.Controllers
             return BlogRepository.ResetDatabase();
         }
 
+        [Route("/GetUser")]
+        [HttpGet]
+        public ActionResult<List<User>> GetUsers()
+        {
+            List<UserModel> userModel = BlogRepository.getUsers();
+
+            List<User> users = new List<User>();
+            foreach(var i in userModel) 
+            {   
+                users.Add(i.toDomainEntity());
+            }
+
+            return users;
+        }
+
         [Route("/CreateUser")]
         [HttpPost]
         public ActionResult<string> CreateUser(User user)

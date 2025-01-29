@@ -1,4 +1,5 @@
-﻿using BlogService.Context;
+﻿using BlogApp.Entities;
+using BlogService.Context;
 using BlogService.Models;
 
 namespace BlogService
@@ -21,6 +22,14 @@ namespace BlogService
             catch (Exception e)
             {
                 return e.Message;
+            }
+        }
+
+        public static List<UserModel> getUsers()
+        {
+            using (var db = new BlogContext())
+            {
+                return db.Users.ToList();
             }
         }
 

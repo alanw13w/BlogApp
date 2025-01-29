@@ -25,5 +25,10 @@ namespace BlogService.Models
                 PostModels = null,
             };
         }
+
+        public User toDomainEntity()
+        {
+            return new User(this.UserModelId, this.FirstName, this.LastName, this.Password, this.Pseudo);
+        }
     }
 }

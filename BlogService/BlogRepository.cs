@@ -1,5 +1,4 @@
-﻿using BlogApp.Entities;
-using BlogService.Context;
+﻿using BlogService.Context;
 using BlogService.Models;
 
 namespace BlogService
@@ -24,6 +23,8 @@ namespace BlogService
                 return e.Message;
             }
         }
+
+        //USERS
 
         public static List<UserModel> getUsers()
         {
@@ -51,6 +52,33 @@ namespace BlogService
 
         }
 
+        public static string deleteUser(UserModel user)
+        {
+            using (var db = new BlogContext())
+            {
+                try
+                {
+                    db.Users.Remove(user);
+                    db.SaveChanges();
+                    return "user deleted";
+                }
+                catch (Exception e)
+                {
+                    return e.Message;
+                }
+            }
+        }
+
+        //POSTS
+
+        public static List<PostModel> getPosts()
+        {
+            using (var db = new BlogContext())
+            {
+                return db.Posts.ToList();
+            }
+        }
+
         public static string createPost(PostModel post)
         {
             using (var db = new BlogContext())
@@ -68,6 +96,33 @@ namespace BlogService
             }
         }
 
+        public static string deletePost(PostModel post)
+        {
+            using (var db = new BlogContext())
+            {
+                try
+                {
+                    db.Posts.Remove(post);
+                    db.SaveChanges();
+                    return "Post deleted";
+                }
+                catch (Exception e)
+                {
+                    return e.Message;
+                }
+            }
+        }
+
+        //BLOGS
+
+        public static List<BlogModel> getBlogs()
+        {
+            using (var db = new BlogContext())
+            {
+                return db.Blogs.ToList();
+            }
+        }
+
         public static string createBlog(BlogModel blog)
         {
             using (var db = new BlogContext())
@@ -77,6 +132,23 @@ namespace BlogService
                     db.Blogs.Add(blog);
                     db.SaveChanges();
                     return "Blog created";
+                }
+                catch (Exception e)
+                {
+                    return e.Message;
+                }
+            }
+        }
+
+        public static string deleteBlog(BlogModel blog)
+        {
+            using (var db = new BlogContext())
+            {
+                try
+                {
+                    db.Blogs.Remove(blog);
+                    db.SaveChanges();
+                    return "Blog deleted";
                 }
                 catch (Exception e)
                 {

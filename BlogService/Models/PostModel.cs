@@ -25,16 +25,14 @@ namespace BlogService.Models
                 Title = post.Title,
                 Content = post.Content,
                 DateTime = post.DateTime,
-                BlogModelId = 0,
-                UserModelId = 0,
-                BlogModel = null,
-                UserModel = null,
+                BlogModelId = 1,
+                UserModelId = 1,
             };
         }
 
         public Post toDomainEntity()
         {
-            return new Post(this.PostModelId, this.Title, this.Content,  this.DateTime);
+            return new Post(this.PostModelId, this.Title, this.Content, this.DateTime, this.UserModelId, this.PostModelId);
         }
     }
 }

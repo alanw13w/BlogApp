@@ -9,13 +9,9 @@ namespace BlogApp.Command
         {
             if (parameter == null)
                 return "Le nom de l'utilisateur est requis";
-            //var user = new User ( Pseudo = parameter );
 
-            //using (var db = new BlogContext())
-            //{
-            //    db.Users.Add(user);
-            //    db.SaveChanges();
-            //}
+            //var repository =  BlogRepository();
+            //repository.createUser(new User { Pseudo = parameter });
 
             return $"Utilisateur {parameter} créé";
         }

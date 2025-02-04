@@ -25,8 +25,8 @@ namespace BlogService.Models
                 Title = post.Title,
                 Content = post.Content,
                 DateTime = post.DateTime,
-                BlogModelId = 1,
-                UserModelId = 1,
+                BlogModelId = post.BlogId,
+                UserModelId = post.UserId,
             };
         }
 

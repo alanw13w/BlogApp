@@ -114,6 +114,7 @@ namespace BlogUI
                 Content = ContentInput.Text,
                 DateTime = DateTime.Now.ToString(),
                 BlogId = await GetBlogIdByName(BlogComboBox.Text),
+                UserId = await GetUserIdByPseudo(UserComboBox.Text),
             };
 
             try
@@ -138,6 +139,16 @@ namespace BlogUI
             }
         }
 
+        private async void setUserComboBox()
+        {
+            UserComboBox.Items.Clear();
+            var users = await GetUsers();
+            foreach (var u in users)
+            {
+                UserComboBox.Items.Add(u.Pseudo);
+            }
+        }
+
         private async Task<int> GetBlogIdByName(string name)
         {
             List<Blog> blogs = await GetBlogs();
@@ -145,9 +156,21 @@ namespace BlogUI
             return blog.BlogId;
         }
 
+        private async Task<int> GetUserIdByPseudo(string pseudo)
+        {
+            List<User> users = await GetUsers();
+            User user = users.FirstOrDefault(u => u.Pseudo == pseudo);
+            return user.UserId;
+        }
+
         private void BlogComboBox_DropDownOpened(object sender, EventArgs e)
         {
             setBlogComboBox();
+        }
+
+        private void UserComboBox_DropDownOpened(object sender, EventArgs e)
+        {
+            setUserComboBox();
         }
     }
 }

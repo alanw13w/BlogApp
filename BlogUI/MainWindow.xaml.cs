@@ -7,15 +7,16 @@ namespace BlogUI
 {
     public partial class MainWindow : Window
     {
-
         private static readonly HttpClient client = new HttpClient();
+
+        BlogProvider provider = new BlogProvider();
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private async void Add_User_Button_Click(object sender, RoutedEventArgs e)
+        private void Add_User_Button_Click(object sender, RoutedEventArgs e)
         {
             User user = new User
             {
@@ -25,37 +26,18 @@ namespace BlogUI
                 Pseudo = PseudoInput.Text ?? "",
             };
 
-            try
-            {
-                HttpResponseMessage response = await client.PostAsJsonAsync("https://localhost:7075/api/user", user);
-                response.EnsureSuccessStatusCode();
-                MessageBox.Show("User added successfully");
-            }
-            catch (HttpRequestException)
-            {
-                MessageBox.Show("Error adding user");
-            }
+            provider.AddUser(user);
         }
 
-        public async Task<List<User>> GetUsers()
+        private void Refresh_Button_Click(object sender, RoutedEventArgs e)
         {
-            var users = new List<User>();
-            try
-            {
-                users = await client.GetFromJsonAsync<List<User>>("https://localhost:7075/api/user");
-                return users;
-            }
-            catch (HttpRequestException)
-            {
-                MessageBox.Show("Error getting users");
-                return users;
-            }
+           RefreshUsers();
         }
 
-        private async void Refresh_Button_Click(object sender, RoutedEventArgs e)
+        private async void RefreshUsers()
         {
             UsersListBox.Items.Clear();
-            var users = await GetUsers();
+            var users = await provider.GetUsers();
             foreach (var u in users)
             {
                 UsersListBox.Items.Add($"Id : {u.UserId}, FirstName: {u.FirstName}, LastName: {u.LastName}, Password: {u.Password}, Pseudo: {u.Pseudo}");
@@ -69,40 +51,21 @@ namespace BlogUI
                 Name = BlogNameInput.Text ?? "",
             };
 
-            try
-            {
-                HttpResponseMessage response = await client.PostAsJsonAsync("https://localhost:7075/api/blog", blog);
-                response.EnsureSuccessStatusCode();
-                MessageBox.Show("Blog added successfully");
-            }
-            catch (HttpRequestException)
-            {
-                MessageBox.Show("Error adding blog");
-            }
+            provider.AddBlog(blog);
         }
 
-        private async void Refresh_Blog_Button_Click(object sender, RoutedEventArgs e)
+        private void Refresh_Blog_Button_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshBlogs();
+        }
+
+        private async void RefreshBlogs()
         {
             BlogListBox.Items.Clear();
-            var blogs = await GetBlogs();
+            var blogs = await provider.GetBlogs();
             foreach (var b in blogs)
             {
                 BlogListBox.Items.Add($"Id : {b.BlogId}, Name: {b.Name}");
-            }
-        }
-
-        public async Task<List<Blog>> GetBlogs()
-        {
-            var blogs = new List<Blog>();
-            try
-            {
-                blogs = await client.GetFromJsonAsync<List<Blog>>("https://localhost:7075/api/blog");
-                return blogs;
-            }
-            catch (HttpRequestException)
-            {
-                MessageBox.Show("Error getting users");
-                return blogs;
             }
         }
 
@@ -117,22 +80,13 @@ namespace BlogUI
                 UserId = await GetUserIdByPseudo(UserComboBox.Text),
             };
 
-            try
-            {
-                HttpResponseMessage response = await client.PostAsJsonAsync("https://localhost:7075/api/post", post);
-                response.EnsureSuccessStatusCode();
-                MessageBox.Show("Post added successfully");
-            }
-            catch (HttpRequestException)
-            {
-                MessageBox.Show("Error adding post");
-            }
+            provider.AddPost(post);
         }
 
         private async void setBlogComboBox()
         {
             BlogComboBox.Items.Clear();
-            var blogs = await GetBlogs();
+            var blogs = await provider.GetBlogs();
             foreach (var b in blogs)
             {
                 BlogComboBox.Items.Add(b.Name);
@@ -142,7 +96,7 @@ namespace BlogUI
         private async void setUserComboBox()
         {
             UserComboBox.Items.Clear();
-            var users = await GetUsers();
+            var users = await provider.GetUsers();
             foreach (var u in users)
             {
                 UserComboBox.Items.Add(u.Pseudo);
@@ -151,14 +105,14 @@ namespace BlogUI
 
         private async Task<int> GetBlogIdByName(string name)
         {
-            List<Blog> blogs = await GetBlogs();
+            List<Blog> blogs = await provider.GetBlogs();
             Blog blog = blogs.FirstOrDefault(b => b.Name == name);
             return blog.BlogId;
         }
 
         private async Task<int> GetUserIdByPseudo(string pseudo)
         {
-            List<User> users = await GetUsers();
+            List<User> users = await provider.GetUsers();
             User user = users.FirstOrDefault(u => u.Pseudo == pseudo);
             return user.UserId;
         }
@@ -173,28 +127,51 @@ namespace BlogUI
             setUserComboBox();
         }
 
-        public async Task<List<Post>> GetPosts()
+        private void Refresh_Post_Button_Click(object sender, RoutedEventArgs e)
         {
-            var posts = new List<Post>();
-            try
-            {
-                posts = await client.GetFromJsonAsync<List<Post>>("https://localhost:7075/api/post");
-                return posts;
-            }
-            catch (HttpRequestException)
-            {
-                MessageBox.Show("Error getting users");
-                return posts;
-            }
+            RefreshPosts();
         }
 
-        private async void Refresh_Post_Button_Click(object sender, RoutedEventArgs e)
+        private async void RefreshPosts()
         {
             PostListBox.Items.Clear();
-            var post = await GetPosts();
+            var post = await provider.GetPosts();
             foreach (var p in post)
             {
                 PostListBox.Items.Add($"Id : {p.PostId}, Title: {p.Title}, Content: {p.Content}, DateTime: {p.DateTime}, BlogId: {p.BlogId}, UserId: {p.UserId}");
+            }
+        }
+
+        private async void UsersListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if(UsersListBox.SelectedItems != null && e.AddedItems.Count > 0)
+            {
+                List<User> users = await provider.GetUsers();
+                User user = users[UsersListBox.SelectedIndex];
+                await provider.DeleteUser(user);
+                RefreshUsers();
+            }
+        }
+
+        private async void BlogListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (BlogListBox.SelectedItems != null && e.AddedItems.Count > 0)
+            {
+                List<Blog> blogs = await provider.GetBlogs();
+                Blog blog = blogs[BlogListBox.SelectedIndex];
+                await provider.DeleteBlog(blog);
+                RefreshBlogs();
+            }
+        }
+
+        private async void PostListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (PostListBox.SelectedItems != null && e.AddedItems.Count > 0)
+            {
+                List<Post> posts = await provider.GetPosts();
+                Post post = posts[PostListBox.SelectedIndex];
+                await provider.DeletePost(post);
+                RefreshPosts();
             }
         }
     }

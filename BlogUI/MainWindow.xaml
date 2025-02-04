@@ -47,7 +47,7 @@
 
                     <GroupBox Header="Users List" Margin="10" Padding="10">
                         <StackPanel>
-                            <ListBox x:Name="UsersListBox" Height="250"/>
+                            <ListBox x:Name="UsersListBox" Height="250" SelectionChanged="UsersListBox_SelectionChanged"/>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>
@@ -83,7 +83,7 @@
 
                     <GroupBox Header="Blog List" Margin="10" Padding="10">
                         <StackPanel>
-                            <ListBox x:Name="BlogListBox" Height="250"/>
+                            <ListBox x:Name="BlogListBox" Height="250"  SelectionChanged="BlogListBox_SelectionChanged"/>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>
@@ -129,7 +129,7 @@
 
                     <GroupBox Header="Post List" Margin="10" Padding="10">
                         <StackPanel>
-                            <ListBox x:Name="PostListBox" Height="250"/>
+                            <ListBox x:Name="PostListBox" Height="250"  SelectionChanged="PostListBox_SelectionChanged"/>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>

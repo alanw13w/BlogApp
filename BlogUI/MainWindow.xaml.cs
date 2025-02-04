@@ -1,13 +1,7 @@
 ﻿using BlogApp.Entities;
-using System.Configuration;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Text.Json;
 using System.Windows;
-using System.Windows.Navigation;
 
 namespace BlogUI
 {
@@ -119,6 +113,7 @@ namespace BlogUI
                 Title = TitleInput.Text ?? "",
                 Content = ContentInput.Text,
                 DateTime = DateTime.Now.ToString(),
+                BlogId = await GetBlogIdByName(BlogComboBox.Text),
             };
 
             try
@@ -133,17 +128,24 @@ namespace BlogUI
             }
         }
 
-        private void setBlogComboBox()
+        private async void setBlogComboBox()
         {
             BlogComboBox.Items.Clear();
-            var blogs = GetBlogs().Result;
+            var blogs = await GetBlogs();
             foreach (var b in blogs)
             {
                 BlogComboBox.Items.Add(b.Name);
             }
         }
 
-        private void BlogComboBox_ContextMenuOpening(object sender, System.Windows.Controls.ContextMenuEventArgs e)
+        private async Task<int> GetBlogIdByName(string name)
+        {
+            List<Blog> blogs = await GetBlogs();
+            Blog blog = blogs.FirstOrDefault(b => b.Name == name);
+            return blog.BlogId;
+        }
+
+        private void BlogComboBox_DropDownOpened(object sender, EventArgs e)
         {
             setBlogComboBox();
         }

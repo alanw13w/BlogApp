@@ -93,16 +93,16 @@ namespace BlogUI
 
         public async Task<List<Blog>> GetBlogs()
         {
-            var users = new List<Blog>();
+            var blogs = new List<Blog>();
             try
             {
-                users = await client.GetFromJsonAsync<List<Blog>>("https://localhost:7075/api/blog");
-                return users;
+                blogs = await client.GetFromJsonAsync<List<Blog>>("https://localhost:7075/api/blog");
+                return blogs;
             }
             catch (HttpRequestException)
             {
                 MessageBox.Show("Error getting users");
-                return users;
+                return blogs;
             }
         }
 
@@ -171,6 +171,31 @@ namespace BlogUI
         private void UserComboBox_DropDownOpened(object sender, EventArgs e)
         {
             setUserComboBox();
+        }
+
+        public async Task<List<Post>> GetPosts()
+        {
+            var posts = new List<Post>();
+            try
+            {
+                posts = await client.GetFromJsonAsync<List<Post>>("https://localhost:7075/api/post");
+                return posts;
+            }
+            catch (HttpRequestException)
+            {
+                MessageBox.Show("Error getting users");
+                return posts;
+            }
+        }
+
+        private async void Refresh_Post_Button_Click(object sender, RoutedEventArgs e)
+        {
+            PostListBox.Items.Clear();
+            var post = await GetPosts();
+            foreach (var p in post)
+            {
+                PostListBox.Items.Add($"Id : {p.PostId}, Title: {p.Title}, Content: {p.Content}, DateTime: {p.DateTime}, BlogId: {p.BlogId}, UserId: {p.UserId}");
+            }
         }
     }
 }

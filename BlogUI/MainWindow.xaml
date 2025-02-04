@@ -123,13 +123,13 @@
                             <ComboBox x:Name="UserComboBox" Grid.Row="3" Grid.Column="1" Width="250" Margin="5" DropDownOpened="UserComboBox_DropDownOpened"/>
 
                             <Button x:Name="Add_Post_Button" Content="Add Post" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Width="100" Click="Add_Post_Button_Click"/>
-                            <Button x:Name="Refresh_Post_Button" Content="Refresh" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" Width="100"/>
+                            <Button x:Name="Refresh_Post_Button" Content="Refresh" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" Width="100" Click="Refresh_Post_Button_Click"/>
                         </Grid>
                     </GroupBox>
 
                     <GroupBox Header="Post List" Margin="10" Padding="10">
                         <StackPanel>
-                            <ListBox x:Name="PostList" Height="250"/>
+                            <ListBox x:Name="PostListBox" Height="250"/>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>

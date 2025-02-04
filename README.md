@@ -4,7 +4,7 @@ Ce projet est une application WPF pour gérer des utilisateurs et des blogs via 
 
 ---
 
-## 🛠️ Configuration du Projet
+## Configuration du Projet
 
 ### **1. Machine Virtuelle**
 - La base de données MySQL est hébergée sur une VM Ubuntu Server.

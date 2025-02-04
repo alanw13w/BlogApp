@@ -30,7 +30,7 @@ namespace BlogService.Controllers
 
         [Route("/api/user")]
         [HttpPost]
-        public ActionResult<string> CreateUser(User user)
+        public ActionResult<string> CreateUser([FromBody]User user)
         {
             UserModel userModel = UserModel.fromDomainEntity(user);
             return BlogRepository.createUser(userModel);
@@ -59,7 +59,7 @@ namespace BlogService.Controllers
 
         [Route("/api/post")]
         [HttpPost]
-        public ActionResult<string> CreatePost(Post post)
+        public ActionResult<string> CreatePost([FromBody]Post post)
         {
             PostModel postModel = PostModel.fromDomainEntity(post);
             return BlogRepository.createPost(postModel);
@@ -93,7 +93,7 @@ namespace BlogService.Controllers
 
         [Route("/api/blog")]
         [HttpPost]
-        public ActionResult<string> CreateBlog(Blog blog)
+        public ActionResult<string> CreateBlog([FromBody]Blog blog)
         {
             BlogModel blogModel = BlogModel.fromDomainEntity(blog);
             return BlogRepository.createBlog(blogModel);

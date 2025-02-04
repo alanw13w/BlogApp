@@ -1,5 +1,6 @@
 ﻿using BlogService.Context;
 using BlogService.Models;
+using System.Diagnostics;
 
 namespace BlogService
 {
@@ -85,6 +86,7 @@ namespace BlogService
             {
                 try
                 {
+                    Debug.WriteLine(post);
                     db.Posts.Add(post);
                     db.SaveChanges();
                     return "Post created";

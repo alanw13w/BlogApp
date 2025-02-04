@@ -28,7 +28,7 @@ namespace BlogService.Models
 
         public User toDomainEntity()
         {
-            return new User(this.UserModelId, this.FirstName, this.LastName, this.Password, this.Pseudo);
+            return new User() { UserId = UserModelId, FirstName=FirstName, LastName=LastName, Password=Password, Pseudo=Pseudo };
         }
     }
 }

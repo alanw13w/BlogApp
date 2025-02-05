@@ -1,6 +1,5 @@
 ﻿using BlogApp.Entities;
 using System.Net.Http;
-using System.Net.Http.Json;
 using System.Windows;
 
 namespace BlogUI
@@ -16,7 +15,9 @@ namespace BlogUI
             InitializeComponent();
         }
 
-        private void Add_User_Button_Click(object sender, RoutedEventArgs e)
+
+
+        private async void Add_User_Button_Click(object sender, RoutedEventArgs e)
         {
             User user = new User
             {
@@ -26,12 +27,13 @@ namespace BlogUI
                 Pseudo = PseudoInput.Text ?? "",
             };
 
-            provider.AddUser(user);
+            await provider.AddUser(user);
+            RefreshUsers();
         }
 
         private void Refresh_Button_Click(object sender, RoutedEventArgs e)
         {
-           RefreshUsers();
+            RefreshUsers();
         }
 
         private async void RefreshUsers()
@@ -51,7 +53,8 @@ namespace BlogUI
                 Name = BlogNameInput.Text ?? "",
             };
 
-            provider.AddBlog(blog);
+            await provider.AddBlog(blog);
+            RefreshBlogs();
         }
 
         private void Refresh_Blog_Button_Click(object sender, RoutedEventArgs e)
@@ -80,7 +83,8 @@ namespace BlogUI
                 UserId = await GetUserIdByPseudo(UserComboBox.Text),
             };
 
-            provider.AddPost(post);
+            await provider.AddPost(post);
+            RefreshPosts();
         }
 
         private async void setBlogComboBox()
@@ -144,7 +148,7 @@ namespace BlogUI
 
         private async void UsersListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if(UsersListBox.SelectedItems != null && e.AddedItems.Count > 0)
+            if (UsersListBox.SelectedItems != null && e.AddedItems.Count > 0)
             {
                 List<User> users = await provider.GetUsers();
                 User user = users[UsersListBox.SelectedIndex];
@@ -173,6 +177,13 @@ namespace BlogUI
                 await provider.DeletePost(post);
                 RefreshPosts();
             }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            RefreshUsers();
+            RefreshBlogs();
+            RefreshPosts();
         }
     }
 }

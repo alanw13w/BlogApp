@@ -9,7 +9,7 @@ namespace BlogUI
     {
         private static readonly HttpClient client = new HttpClient();
 
-        public async void AddUser(User user)
+        public async Task AddUser(User user)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace BlogUI
             }
         }
 
-        public async void AddBlog(Blog blog)
+        public async Task AddBlog(Blog blog)
         {
             try
             {
@@ -93,7 +93,7 @@ namespace BlogUI
             }
         }
 
-        public async void AddPost(Post post)
+        public async Task AddPost(Post post)
         {
             try
             {

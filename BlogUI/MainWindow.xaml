@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BlogUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="885">
+        Title="MainWindow" Height="550" Width="885" Loaded="Window_Loaded">
     <Grid>
         <TabControl>
             <TabItem Header="Users">
